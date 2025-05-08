@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: exampledb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  sqlpad:
+    image: sqlpad/sqlpad:latest
+    container_name: sqlpad
+    environment:
+      SQLPAD_ADMIN: admin
+      SQLPAD_ADMIN_PASSWORD: admin
+      SQLPAD_DB_PATH: /var/lib/sqlpad
+      SQLPAD_AUTH_DISABLED: "true"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    volumes:
+      - sqlpad_data:/var/lib/sqlpad
+
+volumes:
+  pgdata:
+  sqlpad_data:
